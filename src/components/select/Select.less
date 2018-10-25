@@ -1,0 +1,20 @@
+@import '../../styles/variables.less';
+
+select {
+    margin-bottom: 2px;
+}
+
+optgroup {
+    background: #efeeee;
+    color: @font-disabled;
+}
+
+.option {
+    background: #efeeee;
+    color: fade(black, 68%);
+
+    &::before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f00c";
+    }
+}

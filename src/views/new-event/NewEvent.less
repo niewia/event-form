@@ -1,0 +1,32 @@
+.header {
+    height: 45px;
+    background: #345fa0;
+    border-top: 10px solid darken(#345fa0, 15%);
+    line-height: 45px;
+    padding-left: 12%;
+    text-align: left;
+    font-size: 130%;
+    font-weight: 100;
+    box-shadow: 2px 1px 5px 1px #0000004f;
+
+    a {
+        color: #ffffffbd;
+        text-decoration: none;
+    }
+
+    div {
+        cursor: pointer; 
+        width: fit-content;
+        padding: 0 20px;
+
+        &:hover {
+            transition: background 200ms ease-in;  
+            background: darken(#345fa0, 15%);
+
+            a {
+                transition: color 200ms ease-in;  
+                color: white;
+            }
+        }
+    }
+}

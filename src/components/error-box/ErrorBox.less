@@ -1,0 +1,46 @@
+@import '../../styles/variables.less';
+
+.form-field-error-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: fit-content;
+
+    @media only screen and (min-width: 768px) {
+        right: 0;
+        top: 50%;
+        left: initial;
+        transform: translateY(-50%) translateX(75%);
+    }
+
+    .form-field-error-message {
+        position: relative;
+        background: @error-color;
+        color: white;
+        font-weight: 100;
+        padding: 2px 5px;
+        font-size: 90%;
+        text-align: center;
+
+        &::after {
+            content: '\A';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 6px 6px 6px;
+            border-color: transparent transparent @error-color transparent;
+            position: absolute;
+            top: -6px;
+            left: calc(50% - 3px);
+
+            @media only screen and (min-width: 768px) {
+                border-width: 6px 6px 6px 0px;
+                border-color: transparent #ff9494 transparent transparent;
+                top: 50%;
+                left: -5px;
+                transform: translateY(-50%);
+            }
+        }
+    }
+}

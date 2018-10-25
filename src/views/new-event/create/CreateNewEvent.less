@@ -1,0 +1,79 @@
+@import '../../../styles/variables.less'; 
+
+.form-wrapper {
+    height: 100%;
+
+    form {
+        @media only screen and (min-width: 768px) {
+            margin: 20px 10%;
+        }
+    }
+     
+    .form-body {
+        height: calc(100vh - 110px);
+        overflow: auto;
+
+        @media only screen and (min-width: 768px) {
+            height: initial;
+            overflow: initial;
+        }
+    }
+
+    section {
+        background: white;
+        margin-bottom: 3%;
+        border-radius: 3px;
+        padding: 4%;
+        box-shadow: 2px 1px 5px 1px #0000004f;
+    
+        h2 {
+            margin: 0;
+            padding-bottom: 2%;
+            border-bottom: @border;
+            color: @color-main;
+            font-weight: 100;
+            font-size: 125%;
+        }
+
+        .with-label {
+            color: fadeout(@color-main, 30%);
+            font-size: 70%;
+            font-weight: 600;
+            margin: 2% 0;
+        }
+    }
+
+    .reward-points, .duration {
+        display: grid;
+        grid-template-columns: max-content auto;
+        grid-column-gap: 10px;
+        align-items: center;
+    }
+
+    .submit-wrapper {
+        box-sizing: border-box;
+        height: 55px;
+        width: 100%;
+        background: fade(@color-main, 100%);
+        position: fixed;
+        bottom: 0;
+        z-index: 1;
+        display: grid;
+        border-top: 5px solid darken(#345fa0, 15%);
+
+        @media only screen and (min-width: 768px) {
+            background: initial;
+            position: initial;
+            border-top: initial;
+        }
+
+        button {
+            margin: auto;
+            background: #e49606;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 2px;
+        }
+    }
+}

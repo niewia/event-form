@@ -1,0 +1,19 @@
+@import '../../styles/variables.less';
+
+.text-area-wrapper {
+    position: relative;
+
+    .form-field-error-wrapper {
+        bottom: -3px;
+    }
+
+    &.error {
+        textarea {
+            border: 1px solid @error-color;
+        }
+    
+        label {
+            color: @error-color;
+        }
+    }
+}

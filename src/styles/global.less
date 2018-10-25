@@ -1,0 +1,77 @@
+@import 'variables.less'; 
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.secondary-text {
+    color: @font-secondary;
+}
+
+.labeled-control {
+    @media only screen and (min-width: 768px) { 
+        display: flex;
+        align-items: center;
+    }
+
+    & > :nth-child(1) {
+        min-width: 100px;
+        width: 100px;    
+    }
+
+    & > :nth-child(2) {
+        flex: 1;
+    }
+}
+
+label.required::after { 
+    content: ' *';
+    color: #ff00007a;
+    font-size: 10px;
+    vertical-align: text-top;
+}
+
+.form-field-wrapper {
+    position: relative;
+}
+
+.form-field-legend {
+    display: flex;
+    justify-content: space-between;
+    color: #00000036;
+    font-size: 80%;
+    font-style: oblique;
+}
+
+input, textarea, select {
+    width: 100%;
+    box-sizing: border-box;
+    border: @border;
+    border-radius: 2px;
+    color: @font-disabled;
+    font-size: 12px;
+}
+
+select, input {
+    height: 24px;
+    padding-left: 5px;
+
+    &.selected, option {
+        color: @font-secondary;
+        font-weight: 600;
+    }
+}
+
+input, textarea {
+    color: @font-secondary;
+    font-weight: 600;
+}
+
+input[type='radio'] {
+    width: fit-content;
+}
+
+::placeholder {
+    color: @font-disabled;
+    opacity: 1; /* Firefox */
+}
