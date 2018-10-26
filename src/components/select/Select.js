@@ -6,13 +6,15 @@ export default class Select extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedIndex: undefined
+            selectedIndex: props.selected || 0,
+            value: undefined
         }
     }
 
     handleChange = (event) => {
         this.setState({
-            selectedIndex: event.target.selectedIndex
+            selectedIndex: event.target.selectedIndex,
+            value: event.target.value
         })
         this.state.onChange && this.props.onChange(event);
     }
@@ -23,7 +25,7 @@ export default class Select extends Component {
                 <label className={this.props.required ? 'required' : null}>{this.props.title}</label>
                 <div>
                     <select
-                        onChange={this.handleChange} value={this.props.selected}
+                        onChange={this.handleChange} defaultValue={this.props.selected}
                         className={(this.state.selectedIndex || this.props.selected) ? 'selected' : null}
                     >
                         {this.props.defaultOption && <option value="" selected disabled hidden>{this.props.defaultOption}</option>}
@@ -32,7 +34,7 @@ export default class Select extends Component {
                                 const items = item.items.map(item => <option key={item.id} className='option' value={item.id}>{item.name}</option>)
                                 return <optgroup key={item.name} label={item.name}>{items}</optgroup>
                             } else {
-                                return <option className='option' key={item.id} value={item.id}><i class="fas fa-check"></i>{item.name}</option>
+                                return <option className='option' key={item.id} value={item.id}>{item.name}</option>
                             }
                         })}
                     </select>

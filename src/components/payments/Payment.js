@@ -7,30 +7,23 @@ export default class Payments extends Component {
         super(props);
         this.state = {
             isPaid: false,
-            fee: 100,
+            fee: 0,
             showError: false
         }
     }
 
     onFeeChange = (event) => {
         this.setState({
-            fee: event.target.value
+            fee: +event.target.value
         });
         this.props.onChange && this.props.onChange(event);
     }
 
     onPaidChange = () => {
         this.setState({
-            isPaid: !this.state.isPaid
+            isPaid: !this.state.isPaid,
+            fee: 0
         });
-    }
-
-    validate = () => {
-        if (this.state.isPaid && this.state.fee < 1) {
-            this.setState({ showError: true });
-            return false;
-        }
-        return true;
     }
 
     render() {
@@ -38,31 +31,28 @@ export default class Payments extends Component {
             <div className='labeled-control'>
                 <label className={this.props.required ? 'required' : null}>{this.props.title}</label>
                 <div>
-                    <div onChange={this.onPaidChange} className='choice-wrapper'>
-                        <div className='choice'>
-                            <input type='radio' name='paid' value='false' checked={!this.state.isPaid} />
-                            <div className='secondary-text'>Free event</div>
+                    <div className='payment-wrapper'>
+                        <div className='choice-wrapper' onChange={this.onPaidChange}>
+                            <div className='choice'>
+                                <input type='radio' name='paid' value='false' checked={!this.state.isPaid} />
+                                <div className='secondary-text'>Free event</div>
+                            </div>
+                            <div className='choice'>
+                                <input type='radio' name='paid' value='true' checked={this.state.isPaid} />
+                                <div className='secondary-text'>Paid event</div>
+                            </div>
                         </div>
-                        <div className='choice'>
-                            <input type='radio' name='paid' value='true' checked={this.state.isPaid} />
-                            <div className='secondary-text'>Paid event</div>
-                        </div>
-                    </div>
-                    {this.state.isPaid &&
-                        <div>
-                            <span>Fee</span>
+                        <div className='fee' style={{ opacity: this.state.isPaid ? 1 : 0 }}>
                             <input
-                                defaultValue={this.state.fee}
+                                placeholder='Fee'
                                 onChange={this.onFeeChange}
                                 type='number'
-                                min={0}
-                                max={1000000}
                             />
                             {this.state.showError &&
                                 <div className='form-field-error-message'>Enter price or select 'Free event'</div>
                             }
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
         )

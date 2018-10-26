@@ -6,8 +6,6 @@ const initialState = {
 
 const events = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_TITLES':
-      return { ...state, tiles: action.payload }
     case 'SET_CATEGORIES':
       return { ...state, categories: action.payload }
     case 'SET_COORDINATORS':

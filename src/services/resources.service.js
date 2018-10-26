@@ -7,7 +7,24 @@ const rsourcesService = {
     },
 
     getCoordinators() {
-        return axios.get('http://www.mocky.io/v2/5bcdd7992f00006300c855d5').then(result => result.data)
+        return axios.get('http://www.mocky.io/v2/5bcdd7992f00006300c855d5').then(result => {
+            const me = [];
+            const others = [];
+            result.data.forEach(user => {
+                if (user.id == 3) {
+                    me.push(user);
+                } else {
+                    others.push(user);
+                }
+            })
+            return [{
+                name: 'Me',
+                items: me
+            }, {
+                name: 'Others',
+                items: others
+            }];
+        })
     },
 
     getCategories() {

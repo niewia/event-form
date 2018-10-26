@@ -40,6 +40,7 @@ export default class TextArea extends Component {
                     <label className={this.props.required ? 'required' : null}>{this.props.title}</label>
                     <div>
                         <textarea
+                            data-testid='TextArea'
                             placeholder={this.props.placeholder}
                             maxLength={this.props.maxLength}
                             defaultValue={this.state.value}

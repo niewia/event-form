@@ -7,9 +7,8 @@ import Select from '../../../components/select/Select';
 import resourcesService from '../../../services/resources.service';
 import { connect } from 'react-redux';
 import {
-    setCoordinators,
-    setCategories,
-    setTitles
+    fetchCoordinators,
+    fetchCategories
 } from '../../../store/actions/resources';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -22,13 +21,7 @@ class CreateNewEvent extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            title: '',
-            description: '',
-            time: moment(),
-            date: moment(),
-            timeValid: true,
-            formValid: false
+        this.form = {
         }
     }
 
@@ -38,47 +31,47 @@ class CreateNewEvent extends Component {
     }
 
     loadCategories = () => {
-        resourcesService.getCategories().then(result => {
-            this.props.setCategories(result);
-        });
+        this.props.fetchCategories();
     }
 
     loadCoordinators = () => {
-        resourcesService.getCoordinators().then(result => {
-            const me = [];
-            const others = [];
-            result.forEach(user => {
-                if (user.id == 3) {
-                    me.push(user);
-                } else {
-                    others.push(user);
-                }
-            })
-            this.props.setCoordinators([{
-                name: 'Me',
-                items: me
-            }, {
-                name: 'Others',
-                items: others
-            }]);
-        });
+        this.props.fetchCoordinators();
     }
 
     onFormSubmit = async (event) => {
         event.preventDefault();
+        const form = this.form;
 
-        const isTitleValid = await this.title.asyncValidate(this.validateTitle);
-        const isDescriptionValid = this.description.validate();
-        const isDateTimeValid = this.dateTime.validate(this.validateDateTime);
-        const isPaymentValid = this.payment.validate();
+        const isTitleValid = await form.title.asyncValidate(this.validateTitle);
+        const isDescriptionValid = form.description.validate();
+        const isDateTimeValid = form.dateTime.validate(this.validateDateTime);
+
         const formValid = isTitleValid
             && isDescriptionValid
-            && isDateTimeValid
-            && isPaymentValid;
+            && isDateTimeValid;
+
         if (formValid) {
-            console.log('Form is valid.');
-            this.props.history.replace('/new-event/success');
+            this.onFormValid(form)
+        } 
+    }
+
+    onFormValid = (form) => {
+        const formData = {
+            title: form.title.state.value,
+            description: form.description.state.value,
+            category_id: +form.category.state.value,
+            paid_event: form.payment.state.isPaid,
+            eventFee: form.payment.state.isPaid ? form.payment.state.fee : 0,
+            reward: +form.reward.value,
+            date: form.dateTime.state.value,
+            duration: (+form.duration.value * 60 * 60),
+            coordinator: {
+                email: form.email.state.value,
+                id: form.coordinator.state.value
+            }
         }
+        console.log(formData);
+        this.props.history.replace('/new-event/success');
     }
 
     validateTitle(title) {
@@ -104,7 +97,8 @@ class CreateNewEvent extends Component {
     }
 
     validateEmail = (value) => {
-        if (value.length && value.indexOf('@') === -1) {
+        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+        if (!emailRegex.test(value)) {
             return 'Valid email required';
         }
         return ''
@@ -117,19 +111,18 @@ class CreateNewEvent extends Component {
                     <div className='form-body'>
                         <section>
                             <h2>About</h2>
-                            <div className='with-label'>
+                            <div>
                                 <Input
-                                    ref={(ref) => this.title = ref}
+                                    ref={(ref) => this.form.title = ref}
                                     required={true}
                                     title='TITLE'
                                     placeholder='Make it short and clear'
-                                    data-testid='title'
-                                    defaultValue={this.state.title}
+                                    defaultValue={this.form.title}
                                 />
                             </div>
-                            <div className='with-label'>
+                            <div>
                                 <TextArea
-                                    ref={(ref) => this.description = ref}
+                                    ref={(ref) => this.form.description = ref}
                                     required={true}
                                     title='DESCRIPTION'
                                     placeholder='Write about your event, be creative'
@@ -137,17 +130,18 @@ class CreateNewEvent extends Component {
                                     maxLength={maxDescriptionLength}
                                 />
                             </div>
-                            <div className='with-label'>
+                            <div>
                                 <Select
+                                    ref={(ref) => this.form.category = ref}
                                     title='CATEGORY'
                                     legend='Describes topic and people who should be interested in this event'
                                     defaultOption='Select category'
                                     items={this.props.resources.categories}
                                 />
                             </div>
-                            <div className='with-label'>
+                            <div>
                                 <Payment
-                                    ref={(ref) => this.payment = ref}
+                                    ref={(ref) => this.form.payment = ref}
                                     title='PAYMENT'
                                 />
                             </div>
@@ -155,6 +149,7 @@ class CreateNewEvent extends Component {
                                 <label>REWARD</label>
                                 <div className='reward-points'>
                                     <input
+                                        ref={(ref) => this.form.reward = ref}
                                         type='number'
                                         placeholder='Number'
                                     />
@@ -165,29 +160,31 @@ class CreateNewEvent extends Component {
 
                         <section>
                             <h2>Coordinator</h2>
-                            <div className='with-label'>
+                            <div>
                                 <Select
+                                    ref={(ref) => this.form.coordinator = ref}
                                     required={true}
                                     title='RESPONSIBLE'
                                     selected='3'
                                     items={this.props.resources.coordinators}
                                 />
                             </div>
-                            <div className='with-label'>
+                            <div>
                                 <Input
+                                    ref={(ref) => this.form.email = ref}
                                     placeholder='Email'
                                     title='EMAIL'
                                     realTimeValidation={this.validateEmail}
-                                    ref={(ref) => this.email = ref}
+                                    ref={(ref) => this.form.email = ref}
                                 />
                             </div>
                         </section>
 
                         <section>
                             <h2>When</h2>
-                            <div className='with-label'>
+                            <div>
                                 <DateTimePicker
-                                    ref={(ref) => this.dateTime = ref}
+                                    ref={(ref) => this.form.dateTime = ref}
                                     required={true}
                                     title='STARTS ON'
                                 ></DateTimePicker>
@@ -196,6 +193,7 @@ class CreateNewEvent extends Component {
                                 <label>DURATION</label>
                                 <div className='duration'>
                                     <input
+                                        ref={(ref) => this.form.duration = ref}
                                         placeholder='Number'
                                         type='number'
                                     />
@@ -218,9 +216,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    setCoordinators: payload => dispatch(setCoordinators(payload)),
-    setCategories: payload => dispatch(setCategories(payload)),
-    setTitles: payload => dispatch(setTitles(payload))
+    fetchCoordinators: payload => dispatch(fetchCoordinators(payload)),
+    fetchCategories: payload => dispatch(fetchCategories(payload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CreateNewEvent)); 

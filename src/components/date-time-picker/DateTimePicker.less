@@ -27,10 +27,13 @@
         place-items: center;
     }
 
-    @media only screen and (min-width: 768px) {
-        .form-field-error-wrapper {
+    .form-field-error-wrapper {
+        bottom: -16px;   
+
+        @media only screen and (min-width: 768px) {
             right: -60px;
-        }    
+            bottom: initial;     
+        }
     }
 }
 

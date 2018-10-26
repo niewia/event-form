@@ -39,7 +39,7 @@ label.required::after {
     display: flex;
     justify-content: space-between;
     color: #00000036;
-    font-size: 80%;
+    font-size: 60%;
     font-style: oblique;
 }
 
@@ -74,4 +74,14 @@ input[type='radio'] {
 ::placeholder {
     color: @font-disabled;
     opacity: 1; /* Firefox */
+}
+
+label, .secondary-text {
+    font-size: 70%;
+    font-weight: 600;
+    margin: 2% 0;
+}
+
+label {
+    color: fadeout(@color-main, 30%);
 }

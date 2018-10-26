@@ -8,7 +8,7 @@ export default class Input extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.defaultValue,
+            value: props.defaultValue || "",
             showError: false,
             errorMessage: 'This field is required'
         }
@@ -47,6 +47,7 @@ export default class Input extends Component {
                 <div className='labeled-control'>
                     <label className={this.props.required ? 'required' : null}>{this.props.title}</label>
                     <input
+                        data-testid='Input'
                         placeholder={this.props.placeholder}
                         type={this.props.type || 'text'}
                         defaultValue={this.state.value}

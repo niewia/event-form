@@ -102,8 +102,6 @@ export default class DateTimePicker extends Component {
                         data-testid='time'
                         id='time' type='time'
                         value={moment(this.state.time).format('HH:mm')}
-                        min='00:00'
-                        max='12:00'
                         onChange={this.onTimeChange}
                     />
                     <div className='am-pm' onChange={this.onAmPmChange} data-testid='ampm'>
