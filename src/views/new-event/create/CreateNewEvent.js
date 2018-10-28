@@ -45,10 +45,12 @@ class CreateNewEvent extends Component {
         const isTitleValid = await form.title.asyncValidate(this.validateTitle);
         const isDescriptionValid = form.description.validate();
         const isDateTimeValid = form.dateTime.validate(this.validateDateTime);
+        const isCoordinatorValid = form.coordinator.validate();
 
         const formValid = isTitleValid
             && isDescriptionValid
-            && isDateTimeValid;
+            && isDateTimeValid
+            && isCoordinatorValid;
 
         if (formValid) {
             this.onFormValid(form)
@@ -165,7 +167,7 @@ class CreateNewEvent extends Component {
                                     ref={(ref) => this.form.coordinator = ref}
                                     required={true}
                                     title='RESPONSIBLE'
-                                    selected='3'
+                                    value='3'
                                     items={this.props.resources.coordinators}
                                 />
                             </div>

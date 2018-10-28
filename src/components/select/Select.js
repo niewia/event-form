@@ -5,18 +5,23 @@ export default class Select extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
-            selectedIndex: props.selected || 0,
-            value: undefined
+            value: props.value
         }
     }
 
     handleChange = (event) => {
         this.setState({
-            selectedIndex: event.target.selectedIndex,
             value: event.target.value
         })
         this.state.onChange && this.props.onChange(event);
+    }
+
+    validate = () => {
+        return this.props.items
+            && this.props.items.length
+            && this.props.value;
     }
 
     render() {
@@ -25,8 +30,8 @@ export default class Select extends Component {
                 <label className={this.props.required ? 'required' : null}>{this.props.title}</label>
                 <div>
                     <select
-                        onChange={this.handleChange} defaultValue={this.props.selected}
-                        className={(this.state.selectedIndex || this.props.selected) ? 'selected' : null}
+                        onChange={this.handleChange} defaultValue={this.state.value || this.props.value}
+                        className={(this.state.value || this.props.value) ? 'selected' : null}
                     >
                         {this.props.defaultOption && <option value="" selected disabled hidden>{this.props.defaultOption}</option>}
                         {this.props.items && this.props.items.map(item => {
